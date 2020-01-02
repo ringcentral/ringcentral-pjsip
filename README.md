@@ -12,5 +12,5 @@ docker build -t ringcentral-pjsip:latest .
 ## Run
 
 ```
-docker run -it --rm -v `pwd`:/src/cpp/ringcentral-pjsip ringcentral-pjsip 
+docker run -it --rm -v $(pwd):/src/cpp/ringcentral-pjsip ringcentral-pjsip
 ```
