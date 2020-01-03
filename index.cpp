@@ -14,9 +14,11 @@ public:
   }
 
   virtual void onIncomingCall(OnIncomingCallParam &params) {
-    std::cout << "********" << std::endl
-              << "Incoming call" << std::endl
-              << "********" << std::endl;
+    Call *call = new Call(*this, params.callId);
+    CallOpParam callOpParam;
+    callOpParam.statusCode = PJSIP_SC_DECLINE;
+    call->hangup(callOpParam);
+    delete call;
   }
 };
 
@@ -34,8 +36,8 @@ int main() {
   accountConfig.idUri = "sip:" + userName + "@sip.ringcentral.com";
   accountConfig.regConfig.registrarUri = "sip:sip.ringcentral.com";
   accountConfig.sipConfig.proxies = {"sip:" + outboundProxy};
-  AuthCredInfo authCredInfo("digest", "*", authorizationId, 0, password);
-  accountConfig.sipConfig.authCreds.push_back(authCredInfo);
+  accountConfig.sipConfig.authCreds.push_back(
+      AuthCredInfo("digest", "*", authorizationId, 0, password));
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
 
