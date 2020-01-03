@@ -9,7 +9,8 @@ public:
   virtual void onRegState(OnRegStateParam &params) {
     AccountInfo acountInfo = getInfo();
     std::cout << (acountInfo.regIsActive ? "*** Register:" : "*** Unregister:")
-              << " code=" << params.code << std::endl;
+              << " code=" << params.code << " reason=" << params.reason
+              << std::endl;
   }
 
   virtual void onIncomingCall(OnIncomingCallParam &params) {
@@ -20,7 +21,6 @@ public:
 };
 
 int main() {
-  // endpoint
   Endpoint endpoint;
   endpoint.libCreate();
   EpConfig epConfig;
@@ -30,7 +30,6 @@ int main() {
   endpoint.transportCreate(PJSIP_TRANSPORT_UDP, transportConfig);
   endpoint.libStart();
 
-  // account
   AccountConfig accountConfig;
   accountConfig.idUri = "sip:" + userName + "@sip.ringcentral.com";
   accountConfig.regConfig.registrarUri = "sip:sip.ringcentral.com";
@@ -40,7 +39,6 @@ int main() {
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
 
-  // dispose
   pj_thread_sleep(36000000);
   delete myAccount;
   return 0;
