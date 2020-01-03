@@ -1,67 +1,56 @@
-#include <pjsua2.hpp>
-#include <iostream>
 #include "credentials.hpp"
+#include <iostream>
+#include <pjsua2.hpp>
 
 using namespace pj;
 
-// Subclass to extend the Account and get notifications etc.
 class MyAccount : public Account {
 public:
-    virtual void onRegState(OnRegStateParam &prm) {
-        AccountInfo ai = getInfo();
-        std::cout << (ai.regIsActive? "*** Register:" : "*** Unregister:")
-                  << " code=" << prm.code << std::endl;
-    }
-    virtual void onIncomingCall(OnIncomingCallParam &iprm)
-    {
-        std::cout << "********" << std::endl;
-        std::cout << "Incoming call" << std::endl;
-        std::cout << "********" << std::endl;
-    }
+  virtual void onRegState(OnRegStateParam &params) {
+    AccountInfo acountInfo = getInfo();
+    std::cout << (acountInfo.regIsActive ? "*** Register:" : "*** Unregister:")
+              << " code=" << params.code << std::endl;
+  }
+
+  virtual void onIncomingCall(OnIncomingCallParam &params) {
+    std::cout << "********" << std::endl
+              << "Incoming call" << std::endl
+              << "********" << std::endl;
+  }
 };
 
-int main()
-{
-    Endpoint ep;
+int main() {
+  // init
+  Endpoint endpoint;
+  endpoint.libCreate();
+  EpConfig epConfig;
+  endpoint.libInit(epConfig);
 
-    ep.libCreate();
+  // Create transport
+  TransportConfig transportConfig;
+  transportConfig.port = 5060;
+  endpoint.transportCreate(PJSIP_TRANSPORT_UDP, transportConfig);
 
-    // Initialize endpoint
-    EpConfig ep_cfg;
-    ep.libInit( ep_cfg );
+  // Start the library
+  endpoint.libStart();
 
-    // Create SIP transport. Error handling sample is shown
-    TransportConfig tcfg;
-    tcfg.port = 5060;
-    try {
-        ep.transportCreate(PJSIP_TRANSPORT_UDP, tcfg);
-    } catch (Error &err) {
-        std::cout << err.info() << std::endl;
-        return 1;
-    }
+  // Configure an AccountConfig
+  AccountConfig accountConfig;
+  accountConfig.idUri = "sip:" + userName + "@sip.ringcentral.com";
+  accountConfig.regConfig.registrarUri = "sip:sip.ringcentral.com";
+  accountConfig.sipConfig.proxies = {"sip:" + outboundProxy};
+  AuthCredInfo authCredInfo("digest", "*", authorizationId, 0, password);
+  accountConfig.sipConfig.authCreds.push_back(authCredInfo);
 
-    // Start the library (worker threads etc)
-    ep.libStart();
-    std::cout << "*** PJSUA2 STARTED ***" << std::endl;
+  // Create the account
+  MyAccount *myAccount = new MyAccount;
+  myAccount->create(accountConfig);
 
-    // Configure an AccountConfig
-    AccountConfig acfg;
-    acfg.idUri = "sip:" + userName + "@sip.ringcentral.com";
-    acfg.regConfig.registrarUri = "sip:sip.ringcentral.com";
-    acfg.sipConfig.proxies = { "sip:" + outboundProxy };
-    AuthCredInfo cred("digest", "*", authorizationId, 0, password);
-    acfg.sipConfig.authCreds.push_back( cred );
+  // Wait for an hour
+  pj_thread_sleep(36000000);
 
-    // Create the account
-    MyAccount *acc = new MyAccount;
-    acc->create(acfg);
-
-    // Here we don't have anything else to do..
-    pj_thread_sleep(300000);
-
-    // Delete the account. This will unregister from server
-    delete acc;
-
-    // This will implicitly shutdown the library
-    return 0;
+  // Delete the account. This will unregister from server
+  delete myAccount;
+  // This will implicitly shutdown the library
+  return 0;
 }
