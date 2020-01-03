@@ -7,7 +7,11 @@ Use [PJSIP](https://www.pjsip.org/) to create RingCentral device simulators.
 
 ```
 docker build -t ringcentral-pjsip:latest .
+cp credentials.sample.hpp credentials.hpp
 ```
+
+Edit `credentials.hpp` and specify credentials.
+
 
 ## Run
 

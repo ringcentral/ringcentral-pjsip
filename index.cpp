@@ -1,5 +1,6 @@
 #include <pjsua2.hpp>
 #include <iostream>
+#include "credentials.hpp"
 
 using namespace pj;
 
@@ -45,10 +46,10 @@ int main()
 
     // Configure an AccountConfig
     AccountConfig acfg;
-    acfg.idUri = "sip:<User Name>@sip.ringcentral.com";
+    acfg.idUri = "sip:" + userName + "@sip.ringcentral.com";
     acfg.regConfig.registrarUri = "sip:sip.ringcentral.com";
-    acfg.sipConfig.proxies = { "sip:<Outbound Proxy>" };
-    AuthCredInfo cred("digest", "*", "<Authorization ID>", 0, "<password>");
+    acfg.sipConfig.proxies = { "sip:" + outboundProxy };
+    AuthCredInfo cred("digest", "*", authorizationId, 0, password);
     acfg.sipConfig.authCreds.push_back( cred );
 
     // Create the account
