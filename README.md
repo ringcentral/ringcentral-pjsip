@@ -20,3 +20,8 @@ Edit `credentials.hpp` and specify credentials.
 ```
 docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip
 ```
+
+
+## Test
+
+Call the phone number associated with your RingCentral device.
