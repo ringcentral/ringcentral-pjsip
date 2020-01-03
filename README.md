@@ -2,6 +2,8 @@
 
 Use [PJSIP](https://www.pjsip.org/) to create RingCentral device simulators.
 
+Technical Reference: [slides](https://docs.google.com/presentation/d/15KvnbZVB_adSN6xjwlRHh-dsc3HWeVrAkxvBRSLVGPc/edit?usp=sharing).
+
 
 ## Setup
 
