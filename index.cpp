@@ -7,6 +7,8 @@ using namespace pj;
 class MyCall : public Call
 {
 public:
+  AudioMediaRecorder recorder;
+
   MyCall(Account &acc, int call_id = PJSUA_INVALID_ID)
       : Call(acc, call_id)
   {
@@ -16,11 +18,40 @@ public:
   {
   }
 
-  // // Notification when call's state has changed.
-  // virtual void onCallState(OnCallStateParam &prm);
+  virtual void onCallState(OnCallStateParam &params)
+  {
+    std::cout << std::endl
+              << "onCallState" << std::endl;
+    CallInfo callInfo = getInfo();
+    std::cout << std::endl
+              << callInfo.stateText << std::endl;
+    if (callInfo.stateText == "DISCONNCTD")
+    {
+      // delete &recorder;
+    }
+  }
 
-  // // Notification when call's media state has changed.
-  // virtual void onCallMediaState(OnCallMediaStateParam &prm);
+  virtual void onCallMediaState(OnCallMediaStateParam &params)
+  {
+    std::cout << std::endl
+              << "000" << std::endl;
+    CallInfo callInfo = getInfo();
+    for (unsigned i = 0; i < callInfo.media.size(); i++)
+    {
+      std::cout << std::endl
+                << "111" << std::endl;
+      if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
+      {
+        std::cout << std::endl
+                  << "222" << std::endl;
+        AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
+
+        recorder.createRecorder("/ringcentral-pjsip/temp.wav");
+        audioMedia->startTransmit(recorder);
+        break;
+      }
+    }
+  }
 };
 
 class MyAccount : public Account
@@ -48,7 +79,7 @@ public:
 
   virtual void onIncomingCall(OnIncomingCallParam &params)
   {
-    Call *call = new Call(*this, params.callId);
+    Call *call = new MyCall(*this, params.callId);
     CallOpParam callOpParam;
     callOpParam.statusCode = PJSIP_SC_OK;
     call->answer(callOpParam);
@@ -77,6 +108,8 @@ int main()
       AuthCredInfo("digest", "*", authorizationId, 0, password));
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
+
+  Endpoint::instance().audDevManager().setNullDev();
 
   pj_thread_sleep(36000000); // 10 hours
   delete myAccount;
