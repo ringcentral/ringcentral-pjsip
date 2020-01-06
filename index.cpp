@@ -4,6 +4,25 @@
 
 using namespace pj;
 
+class MyCall : public Call
+{
+public:
+  MyCall(Account &acc, int call_id = PJSUA_INVALID_ID)
+      : Call(acc, call_id)
+  {
+  }
+
+  ~MyCall()
+  {
+  }
+
+  // // Notification when call's state has changed.
+  // virtual void onCallState(OnCallStateParam &prm);
+
+  // // Notification when call's media state has changed.
+  // virtual void onCallMediaState(OnCallMediaStateParam &prm);
+};
+
 class MyAccount : public Account
 {
 public:
@@ -13,6 +32,18 @@ public:
     std::cout << (acountInfo.regIsActive ? "*** Register:" : "*** Unregister:")
               << " code=" << params.code << " reason=" << params.reason
               << std::endl;
+
+    // Try to make outbound call
+    // Call *call = new MyCall(*this);
+    // CallOpParam prm(true); // Use default call settings
+    // try
+    // {
+    //   call->makeCall("16508888888", prm);
+    // }
+    // catch (Error &err)
+    // {
+    //   std::cout << err.info() << std::endl;
+    // }
   }
 
   virtual void onIncomingCall(OnIncomingCallParam &params)
@@ -47,26 +78,7 @@ int main()
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
 
-  pj_thread_sleep(36000000);
+  pj_thread_sleep(36000000); // 10 hours
   delete myAccount;
   return 0;
 }
-
-class MyCall : public Call
-{
-public:
-  MyCall(Account &acc, int call_id = PJSUA_INVALID_ID)
-      : Call(acc, call_id)
-  {
-  }
-
-  ~MyCall()
-  {
-  }
-
-  // // Notification when call's state has changed.
-  // virtual void onCallState(OnCallStateParam &prm);
-
-  // // Notification when call's media state has changed.
-  // virtual void onCallMediaState(OnCallMediaStateParam &prm);
-};
