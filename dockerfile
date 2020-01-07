@@ -5,4 +5,3 @@ RUN wget https://www.pjsip.org/release/2.9/pjproject-2.9.tar.bz2 && tar -jxvf pj
 WORKDIR /pjproject-2.9
 RUN ./configure && make dep && make && make install
 WORKDIR /ringcentral-pjsip
-CMD ["./run.sh"]

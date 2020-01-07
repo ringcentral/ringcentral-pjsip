@@ -18,7 +18,7 @@ Edit `credentials.hpp` and specify credentials.
 ## Run
 
 ```
-docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip
+docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip ./run.sh <file-name>.cpp
 ```
 
 
