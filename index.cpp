@@ -45,7 +45,6 @@ public:
         std::cout << std::endl
                   << "222" << std::endl;
         // AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
-
         // recorder.createRecorder("/ringcentral-pjsip/temp.wav");
         // audioMedia->startTransmit(recorder);
         break;
@@ -64,17 +63,10 @@ public:
               << " code=" << params.code << " reason=" << params.reason
               << std::endl;
 
-    // Try to make outbound call
-    Call *call = new MyCall(*this);
-    CallOpParam prm(true); // Use default call settings
-    try
-    {
-      call->makeCall("sip:6504306662@199.255.120.176:5090", prm);
-    }
-    catch (Error &err)
-    {
-      std::cout << err.info() << std::endl;
-    }
+    // Make outbound call
+    // Call *call = new MyCall(*this);
+    // CallOpParam prm(true); // Use default call settings
+    // call->makeCall("sip:6508888888", prm);
   }
 
   virtual void onIncomingCall(OnIncomingCallParam &params)
@@ -83,9 +75,6 @@ public:
     CallOpParam callOpParam;
     callOpParam.statusCode = PJSIP_SC_OK;
     call->answer(callOpParam);
-    // callOpParam.statusCode = PJSIP_SC_DECLINE;
-    // call->hangup(callOpParam);
-    // delete call;
   }
 };
 
