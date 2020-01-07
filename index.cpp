@@ -51,6 +51,12 @@ public:
       }
     }
   }
+
+  virtual void onDtmfDigit(OnDtmfDigitParam &params)
+  {
+    std::cout << std::endl
+              << params.digit << std::endl;
+  }
 };
 
 class MyAccount : public Account
