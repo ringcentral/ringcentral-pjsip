@@ -44,10 +44,10 @@ public:
       {
         std::cout << std::endl
                   << "222" << std::endl;
-        AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
+        // AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
 
-        recorder.createRecorder("/ringcentral-pjsip/temp.wav");
-        audioMedia->startTransmit(recorder);
+        // recorder.createRecorder("/ringcentral-pjsip/temp.wav");
+        // audioMedia->startTransmit(recorder);
         break;
       }
     }
@@ -65,16 +65,16 @@ public:
               << std::endl;
 
     // Try to make outbound call
-    // Call *call = new MyCall(*this);
-    // CallOpParam prm(true); // Use default call settings
-    // try
-    // {
-    //   call->makeCall("16508888888", prm);
-    // }
-    // catch (Error &err)
-    // {
-    //   std::cout << err.info() << std::endl;
-    // }
+    Call *call = new MyCall(*this);
+    CallOpParam prm(true); // Use default call settings
+    try
+    {
+      call->makeCall("sip:6504306662@199.255.120.176:5090", prm);
+    }
+    catch (Error &err)
+    {
+      std::cout << err.info() << std::endl;
+    }
   }
 
   virtual void onIncomingCall(OnIncomingCallParam &params)
@@ -100,6 +100,8 @@ int main()
   endpoint.transportCreate(PJSIP_TRANSPORT_UDP, transportConfig);
   endpoint.libStart();
 
+  Endpoint::instance().audDevManager().setNullDev();
+
   AccountConfig accountConfig;
   accountConfig.idUri = "sip:" + userName + "@sip.ringcentral.com";
   accountConfig.regConfig.registrarUri = "sip:sip.ringcentral.com";
@@ -108,8 +110,6 @@ int main()
       AuthCredInfo("digest", "*", authorizationId, 0, password));
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
-
-  Endpoint::instance().audDevManager().setNullDev();
 
   pj_thread_sleep(36000000); // 10 hours
   delete myAccount;
