@@ -26,7 +26,7 @@ public:
       if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
       {
         AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
-        player.createPlayer("test.wav", PJMEDIA_FILE_NO_LOOP);
+        player.createPlayer("sample.wav", PJMEDIA_FILE_NO_LOOP);
         player.startTransmit(*audioMedia);
         break;
       }
