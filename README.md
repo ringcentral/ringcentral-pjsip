@@ -42,3 +42,22 @@ Call the phone number associated with your RingCentral device.
 
 - How to deploy to AWS?
 - Do a telephony survey demo, like the one I created using IVR scripting API
+
+
+## Miscellaneos
+
+### How to gererate wav file for testing
+
+```
+say -o temp.wav --data-format=LEI16@48000 "Hello world"
+```
+
+Command above convert text "Hello world" to `temp.wav` file.
+
+**BUT** this file doesn't have proper headers.
+
+In order to fix it, we need ffmpeg:
+
+```
+ffmpeg -i temp.wav hello.wav
+```
