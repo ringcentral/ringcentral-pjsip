@@ -1,7 +1,9 @@
 #include <iostream>
 
-const std::string userName = "";
-const std::string outboundProxy = "";
-const std::string authorizationId = "";
-const std::string password = "";
-const std::string calleeNumber = "";
+using namespace std;
+
+const string userName = "";
+const string outboundProxy = "";
+const string authorizationId = "";
+const string password = "";
+const string calleeNumber = "";
