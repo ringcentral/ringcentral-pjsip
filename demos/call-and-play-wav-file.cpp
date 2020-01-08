@@ -9,6 +9,7 @@ class MyCall : public Call
 public:
   AudioMediaPlayer player;
   bool playerCreated = false;
+  AudioMedia *audioMedia;
 
   MyCall(Account &acc, int call_id = PJSUA_INVALID_ID)
       : Call(acc, call_id)
@@ -29,29 +30,25 @@ public:
     {
       if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
       {
-        AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
-        player.createPlayer("sample.wav", PJMEDIA_FILE_NO_LOOP);
+        audioMedia = (AudioMedia *)getMedia(i);
+        player.createPlayer("demos/survey/question.wav", PJMEDIA_FILE_NO_LOOP);
         playerCreated = true;
-        player.startTransmit(*audioMedia);
         break;
       }
+    }
+  }
+
+  virtual void onCallState(OnCallStateParam &params) {
+    CallInfo callInfo = getInfo();
+    if(callInfo.stateText == "CONFIRMED") {
+      pj_thread_sleep(3000); // 3 seconds
+      player.startTransmit(*audioMedia);
     }
   }
 };
 
 class MyAccount : public Account
 {
-public:
-  virtual void onRegState(OnRegStateParam &params)
-  {
-    AccountInfo acountInfo = getInfo();
-    if(acountInfo.regIsActive) {
-      // Make outbound call
-      Call *call = new MyCall(*this);
-      CallOpParam prm(true); // Use default call settings
-      call->makeCall("sip:" + calleeNumber, prm);
-    }
-  }
 };
 
 int main()
@@ -75,6 +72,12 @@ int main()
       AuthCredInfo("digest", "*", authorizationId, 0, password));
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
+
+  pj_thread_sleep(3000); // 3 seconds
+  // Make outbound call
+  Call *call = new MyCall(*myAccount);
+  CallOpParam prm(true); // Use default call settings
+  call->makeCall("sip:" + calleeNumber, prm);
 
   pj_thread_sleep(36000000); // 10 hours
   delete myAccount;
