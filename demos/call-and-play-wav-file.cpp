@@ -44,10 +44,13 @@ class MyAccount : public Account
 public:
   virtual void onRegState(OnRegStateParam &params)
   {
-    // Make outbound call
-    Call *call = new MyCall(*this);
-    CallOpParam prm(true); // Use default call settings
-    call->makeCall("sip:" + calleeNumber, prm);
+    AccountInfo acountInfo = getInfo();
+    if(acountInfo.regIsActive) {
+      // Make outbound call
+      Call *call = new MyCall(*this);
+      CallOpParam prm(true); // Use default call settings
+      call->makeCall("sip:" + calleeNumber, prm);
+    }
   }
 };
 
