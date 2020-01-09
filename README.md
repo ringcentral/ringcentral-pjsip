@@ -33,15 +33,11 @@ docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip ./run.sh demo
 Call the phone number associated with your RingCentral device.
 
 
-## Similar projects
-
-- [andrius/pjsua](https://github.com/andrius/pjsua)
-
-
 ## Todo
 
 - How to deploy to AWS?
 - Do a telephony survey demo, like the one I created using IVR scripting API
+- Add demo about microphone and speaker
 
 
 ## Miscellaneos
