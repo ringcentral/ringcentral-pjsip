@@ -8,8 +8,6 @@ class MyCall : public Call
 {
 public:
   AudioMediaPlayer player;
-  bool playerCreated = false;
-  AudioMedia *audioMedia;
 
   MyCall(Account &acc, int call_id = PJSUA_INVALID_ID)
       : Call(acc, call_id)
@@ -20,29 +18,20 @@ public:
   {
   }
 
-  virtual void onCallMediaState(OnCallMediaStateParam &params)
-  {
-    if(playerCreated) {
-      return;
-    }
-    CallInfo callInfo = getInfo();
-    for (unsigned i = 0; i < callInfo.media.size(); i++)
-    {
-      if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
-      {
-        audioMedia = (AudioMedia *)getMedia(i);
-        player.createPlayer("demos/survey/question.wav", PJMEDIA_FILE_NO_LOOP);
-        playerCreated = true;
-        break;
-      }
-    }
-  }
-
   virtual void onCallState(OnCallStateParam &params) {
     CallInfo callInfo = getInfo();
-    if(callInfo.stateText == "CONFIRMED") {
-      pj_thread_sleep(3000); // 3 seconds
-      player.startTransmit(*audioMedia);
+    if(callInfo.stateText == "CONFIRMED") { // call answered
+      pj_thread_sleep(2000); // 2 seconds
+      for (unsigned i = 0; i < callInfo.media.size(); i++)
+      {
+        if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
+        {
+          AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
+          player.createPlayer("demos/survey/question.wav", PJMEDIA_FILE_NO_LOOP);
+          player.startTransmit(*audioMedia);
+          break;
+        }
+      }
     }
   }
 };
@@ -73,7 +62,7 @@ int main()
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
 
-  pj_thread_sleep(3000); // 3 seconds
+  pj_thread_sleep(2000); // 2 seconds
   // Make outbound call
   Call *call = new MyCall(*myAccount);
   CallOpParam prm(true); // Use default call settings
