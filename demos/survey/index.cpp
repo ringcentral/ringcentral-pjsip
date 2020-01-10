@@ -4,11 +4,25 @@
 
 using namespace pj;
 
+AudioMedia *audioMedia;
+
+class MyAudioMediaPlayer : public AudioMediaPlayer
+{
+public:
+  virtual bool onEof()
+  {
+    std::cout << std::endl
+              << "MyAudioMediaPlayer onEof" << std::endl;
+    this->stopTransmit(*audioMedia);
+    return false;
+  }
+};
+
+MyAudioMediaPlayer player;
+
 class MyCall : public Call
 {
 public:
-  AudioMediaPlayer player;
-
   MyCall(Account &acc, int call_id = PJSUA_INVALID_ID)
       : Call(acc, call_id)
   {
@@ -26,7 +40,7 @@ public:
       {
         if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
         {
-          AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
+          audioMedia = (AudioMedia *)getMedia(i);
           player.createPlayer("demos/survey/audios/greetings.wav", PJMEDIA_FILE_NO_LOOP);
           player.startTransmit(*audioMedia);
           break;
