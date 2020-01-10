@@ -5,6 +5,7 @@
 using namespace pj;
 
 AudioMedia *audioMedia;
+AudioMediaPlayer player2;
 
 class MyAudioMediaPlayer : public AudioMediaPlayer
 {
@@ -14,6 +15,9 @@ public:
     std::cout << std::endl
               << "MyAudioMediaPlayer onEof" << std::endl;
     this->stopTransmit(*audioMedia);
+    pj_thread_sleep(2000); // 2 seconds
+    player2.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
+    player2.startTransmit(*audioMedia);
     return false;
   }
 };
