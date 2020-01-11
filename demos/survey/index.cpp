@@ -8,15 +8,23 @@ using namespace pj;
 AudioMedia *audioMedia;
 GreetingsAudioMediaPlayer greetingsPlayer;
 QuestionAudioMediaPlayer questionPlayer;
+ByeAudioMediaPlayer byePlayer;
 
 bool GreetingsAudioMediaPlayer::onEof()
 {
-    std::cout << std::endl
-              << "GreetingsAudioMediaPlayer onEof" << std::endl;
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
     questionPlayer.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
     questionPlayer.startTransmit(*audioMedia);
+    return false;
+}
+
+bool QuestionAudioMediaPlayer::onEof()
+{
+    this->stopTransmit(*audioMedia);
+    pj_thread_sleep(2000); // 2 seconds
+    byePlayer.createPlayer("demos/survey/audios/bye.wav", PJMEDIA_FILE_NO_LOOP);
+    byePlayer.startTransmit(*audioMedia);
     return false;
 }
 

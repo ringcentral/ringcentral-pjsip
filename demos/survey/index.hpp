@@ -14,6 +14,15 @@ public:
 #define QuestionAudioMediaPlayer_H
 class QuestionAudioMediaPlayer : public AudioMediaPlayer
 {
+public:
+  virtual bool onEof();
+};
+#endif
+
+#ifndef ByeAudioMediaPlayer_H
+#define ByeAudioMediaPlayer_H
+class ByeAudioMediaPlayer : public AudioMediaPlayer
+{
 // public:
 //   virtual bool onEof();
 };
