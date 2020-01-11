@@ -1,3 +1,4 @@
+#include "./index.hpp"
 #include "../../credentials.hpp"
 #include <iostream>
 #include <pjsua2.hpp>
@@ -7,11 +8,8 @@ using namespace pj;
 AudioMedia *audioMedia;
 AudioMediaPlayer player2;
 
-class MyAudioMediaPlayer : public AudioMediaPlayer
+bool MyAudioMediaPlayer::onEof()
 {
-public:
-  virtual bool onEof()
-  {
     std::cout << std::endl
               << "MyAudioMediaPlayer onEof" << std::endl;
     this->stopTransmit(*audioMedia);
@@ -19,8 +17,8 @@ public:
     player2.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
     player2.startTransmit(*audioMedia);
     return false;
-  }
-};
+}
+
 
 MyAudioMediaPlayer player;
 
