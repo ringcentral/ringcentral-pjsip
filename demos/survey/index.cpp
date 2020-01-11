@@ -8,7 +8,12 @@ using namespace pj;
 AudioMedia *audioMedia;
 GreetingsAudioMediaPlayer greetingsPlayer;
 QuestionAudioMediaPlayer questionPlayer;
+RedAudioMediaPlayer redPlayer;
+GreenAudioMediaPlayer greenPlayer;
+BlueAudioMediaPlayer bluePlayer;
+InvalidAudioMediaPlayer invalidPlayer;
 ByeAudioMediaPlayer byePlayer;
+bool questionPlaying = false;
 
 bool GreetingsAudioMediaPlayer::onEof()
 {
@@ -16,6 +21,7 @@ bool GreetingsAudioMediaPlayer::onEof()
     pj_thread_sleep(2000); // 2 seconds
     questionPlayer.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
     questionPlayer.startTransmit(*audioMedia);
+    questionPlaying = true;
     return false;
 }
 
@@ -81,6 +87,35 @@ public:
           break;
         }
       }
+    }
+  }
+
+  virtual void onDtmfDigit(OnDtmfDigitParam &params)
+  {
+    std::cout << std::endl
+              << params.digit << std::endl;
+    if(!questionPlaying) 
+    {
+      return;
+    }
+    questionPlayer.stopTransmit(*audioMedia);
+    if(params.digit == "1")
+    {
+      redPlayer.createPlayer("demos/survey/audios/red.wav", PJMEDIA_FILE_NO_LOOP);
+      redPlayer.startTransmit(*audioMedia);
+    }
+    else if(params.digit == "2")
+    {
+      greenPlayer.createPlayer("demos/survey/audios/green.wav", PJMEDIA_FILE_NO_LOOP);
+      greenPlayer.startTransmit(*audioMedia);
+    }
+    else if(params.digit == "3")
+    {
+      bluePlayer.createPlayer("demos/survey/audios/blue.wav", PJMEDIA_FILE_NO_LOOP);
+      bluePlayer.startTransmit(*audioMedia);
+    } else {
+      invalidPlayer.createPlayer("demos/survey/audios/invalid.wav", PJMEDIA_FILE_NO_LOOP);
+      invalidPlayer.startTransmit(*audioMedia);
     }
   }
 };
