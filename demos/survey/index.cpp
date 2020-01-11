@@ -6,8 +6,8 @@
 using namespace pj;
 
 AudioMedia *audioMedia;
-GreetingsAudioMediaPlayer player;
-AudioMediaPlayer player2;
+GreetingsAudioMediaPlayer greetingsPlayer;
+QuestionAudioMediaPlayer questionPlayer;
 
 bool GreetingsAudioMediaPlayer::onEof()
 {
@@ -15,8 +15,8 @@ bool GreetingsAudioMediaPlayer::onEof()
               << "GreetingsAudioMediaPlayer onEof" << std::endl;
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
-    player2.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
-    player2.startTransmit(*audioMedia);
+    questionPlayer.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
+    questionPlayer.startTransmit(*audioMedia);
     return false;
 }
 
@@ -41,8 +41,8 @@ public:
         if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
         {
           audioMedia = (AudioMedia *)getMedia(i);
-          player.createPlayer("demos/survey/audios/greetings.wav", PJMEDIA_FILE_NO_LOOP);
-          player.startTransmit(*audioMedia);
+          greetingsPlayer.createPlayer("demos/survey/audios/greetings.wav", PJMEDIA_FILE_NO_LOOP);
+          greetingsPlayer.startTransmit(*audioMedia);
           break;
         }
       }

@@ -9,3 +9,12 @@ public:
   virtual bool onEof();
 };
 #endif
+
+#ifndef QuestionAudioMediaPlayer_H
+#define QuestionAudioMediaPlayer_H
+class QuestionAudioMediaPlayer : public AudioMediaPlayer
+{
+// public:
+//   virtual bool onEof();
+};
+#endif
