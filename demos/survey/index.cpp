@@ -6,6 +6,7 @@
 using namespace pj;
 
 AudioMedia *audioMedia;
+MyAudioMediaPlayer player;
 AudioMediaPlayer player2;
 
 bool MyAudioMediaPlayer::onEof()
@@ -18,9 +19,6 @@ bool MyAudioMediaPlayer::onEof()
     player2.startTransmit(*audioMedia);
     return false;
 }
-
-
-MyAudioMediaPlayer player;
 
 class MyCall : public Call
 {
