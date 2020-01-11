@@ -6,13 +6,13 @@
 using namespace pj;
 
 AudioMedia *audioMedia;
-MyAudioMediaPlayer player;
+GreetingsAudioMediaPlayer player;
 AudioMediaPlayer player2;
 
-bool MyAudioMediaPlayer::onEof()
+bool GreetingsAudioMediaPlayer::onEof()
 {
     std::cout << std::endl
-              << "MyAudioMediaPlayer onEof" << std::endl;
+              << "GreetingsAudioMediaPlayer onEof" << std::endl;
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
     player2.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
@@ -76,7 +76,7 @@ int main()
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
 
-  pj_thread_sleep(2000); // 2 seconds
+  pj_thread_sleep(3000); // 3 seconds
   // Make outbound call
   Call *call = new MyCall(*myAccount);
   CallOpParam prm(true); // Use default call settings
