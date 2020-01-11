@@ -22,9 +22,36 @@ bool GreetingsAudioMediaPlayer::onEof()
 bool QuestionAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
-    pj_thread_sleep(2000); // 2 seconds
-    byePlayer.createPlayer("demos/survey/audios/bye.wav", PJMEDIA_FILE_NO_LOOP);
-    byePlayer.startTransmit(*audioMedia);
+    return false;
+}
+
+bool RedAudioMediaPlayer::onEof()
+{
+    this->stopTransmit(*audioMedia);
+    return false;
+}
+
+bool GreenAudioMediaPlayer::onEof()
+{
+    this->stopTransmit(*audioMedia);
+    return false;
+}
+
+bool BlueAudioMediaPlayer::onEof()
+{
+    this->stopTransmit(*audioMedia);
+    return false;
+}
+
+bool InvalidAudioMediaPlayer::onEof()
+{
+    this->stopTransmit(*audioMedia);
+    return false;
+}
+
+bool ByeAudioMediaPlayer::onEof()
+{
+    this->stopTransmit(*audioMedia);
     return false;
 }
 
