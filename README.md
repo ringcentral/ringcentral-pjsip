@@ -36,8 +36,9 @@ Call the phone number associated with your RingCentral device.
 ## Todo
 
 - How to deploy to AWS?
-- Do a telephony survey demo, like the one I created using IVR scripting API
 - Add demo about microphone and speaker
+- high concurrence
+    - one application to handle handreds of calls
 
 
 ## Miscellaneos
