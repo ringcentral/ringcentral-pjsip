@@ -14,6 +14,7 @@ BlueAudioMediaPlayer bluePlayer;
 InvalidAudioMediaPlayer invalidPlayer;
 ByeAudioMediaPlayer byePlayer;
 bool questionPlaying = false;
+Call *call;
 
 bool GreetingsAudioMediaPlayer::onEof()
 {
@@ -26,8 +27,6 @@ bool GreetingsAudioMediaPlayer::onEof()
 
 bool QuestionAudioMediaPlayer::onEof()
 {
-    // this->stopTransmit(*audioMedia);
-    // return false;
     return true;
 }
 
@@ -67,6 +66,9 @@ bool InvalidAudioMediaPlayer::onEof()
 bool ByeAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
+    pj_thread_sleep(2000); // 2 seconds
+    CallOpParam callOpParam;
+    call->hangup(callOpParam);
     return false;
 }
 
@@ -152,9 +154,9 @@ int main()
   MyAccount *myAccount = new MyAccount;
   myAccount->create(accountConfig);
 
-  pj_thread_sleep(3000); // 3 seconds
+  pj_thread_sleep(5000); // 5 seconds
   // Make outbound call
-  Call *call = new MyCall(*myAccount);
+  call = new MyCall(*myAccount);
   CallOpParam prm(true); // Use default call settings
   call->makeCall("sip:" + calleeNumber, prm);
 
