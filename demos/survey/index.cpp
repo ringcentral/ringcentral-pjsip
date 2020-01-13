@@ -19,7 +19,7 @@ bool GreetingsAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
-    questionPlayer.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
+    questionPlayer.createPlayer("demos/survey/audios/question.wav");
     questionPlayer.startTransmit(*audioMedia);
     questionPlaying = true;
     return false;
@@ -27,32 +27,45 @@ bool GreetingsAudioMediaPlayer::onEof()
 
 bool QuestionAudioMediaPlayer::onEof()
 {
-    this->stopTransmit(*audioMedia);
-    return false;
+    // this->stopTransmit(*audioMedia);
+    // return false;
+    return true;
 }
 
 bool RedAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
+    pj_thread_sleep(2000); // 2 seconds
+    byePlayer.createPlayer("demos/survey/audios/bye.wav", PJMEDIA_FILE_NO_LOOP);
+    byePlayer.startTransmit(*audioMedia);
     return false;
 }
 
 bool GreenAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
+    pj_thread_sleep(2000); // 2 seconds
+    byePlayer.createPlayer("demos/survey/audios/bye.wav", PJMEDIA_FILE_NO_LOOP);
+    byePlayer.startTransmit(*audioMedia);
     return false;
 }
 
 bool BlueAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
+    pj_thread_sleep(2000); // 2 seconds
+    byePlayer.createPlayer("demos/survey/audios/bye.wav", PJMEDIA_FILE_NO_LOOP);
+    byePlayer.startTransmit(*audioMedia);
     return false;
 }
 
 bool InvalidAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
-    return false;
+    questionPlayer.setPos(0);
+    questionPlayer.startTransmit(*audioMedia);
+    questionPlaying = true;
+    return true;
 }
 
 bool ByeAudioMediaPlayer::onEof()
@@ -99,6 +112,8 @@ public:
       return;
     }
     questionPlayer.stopTransmit(*audioMedia);
+    questionPlaying = false;
+    pj_thread_sleep(2000); // 2 seconds
     if(params.digit == "1")
     {
       redPlayer.createPlayer("demos/survey/audios/red.wav", PJMEDIA_FILE_NO_LOOP);
@@ -114,7 +129,6 @@ public:
       bluePlayer.createPlayer("demos/survey/audios/blue.wav", PJMEDIA_FILE_NO_LOOP);
       bluePlayer.startTransmit(*audioMedia);
     } else {
-      invalidPlayer.createPlayer("demos/survey/audios/invalid.wav", PJMEDIA_FILE_NO_LOOP);
       invalidPlayer.startTransmit(*audioMedia);
     }
   }
@@ -151,6 +165,8 @@ int main()
   Call *call = new MyCall(*myAccount);
   CallOpParam prm(true); // Use default call settings
   call->makeCall("sip:" + calleeNumber, prm);
+
+  invalidPlayer.createPlayer("demos/survey/audios/invalid.wav");
 
   pj_thread_sleep(36000000); // 10 hours
   delete myAccount;
