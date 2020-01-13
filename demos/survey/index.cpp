@@ -19,7 +19,6 @@ bool GreetingsAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
-    questionPlayer.createPlayer("demos/survey/audios/question.wav");
     questionPlayer.startTransmit(*audioMedia);
     questionPlaying = true;
     return false;
@@ -36,7 +35,6 @@ bool RedAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
-    byePlayer.createPlayer("demos/survey/audios/bye.wav");
     byePlayer.startTransmit(*audioMedia);
     return false;
 }
@@ -45,7 +43,6 @@ bool GreenAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
-    byePlayer.createPlayer("demos/survey/audios/bye.wav");
     byePlayer.startTransmit(*audioMedia);
     return false;
 }
@@ -54,7 +51,6 @@ bool BlueAudioMediaPlayer::onEof()
 {
     this->stopTransmit(*audioMedia);
     pj_thread_sleep(2000); // 2 seconds
-    byePlayer.createPlayer("demos/survey/audios/bye.wav");
     byePlayer.startTransmit(*audioMedia);
     return false;
 }
@@ -95,7 +91,6 @@ public:
         if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
         {
           audioMedia = (AudioMedia *)getMedia(i);
-          greetingsPlayer.createPlayer("demos/survey/audios/greetings.wav");
           greetingsPlayer.startTransmit(*audioMedia);
           break;
         }
@@ -116,17 +111,14 @@ public:
     pj_thread_sleep(2000); // 2 seconds
     if(params.digit == "1")
     {
-      redPlayer.createPlayer("demos/survey/audios/red.wav");
       redPlayer.startTransmit(*audioMedia);
     }
     else if(params.digit == "2")
     {
-      greenPlayer.createPlayer("demos/survey/audios/green.wav");
       greenPlayer.startTransmit(*audioMedia);
     }
     else if(params.digit == "3")
     {
-      bluePlayer.createPlayer("demos/survey/audios/blue.wav");
       bluePlayer.startTransmit(*audioMedia);
     } else {
       invalidPlayer.startTransmit(*audioMedia);
@@ -167,6 +159,12 @@ int main()
   call->makeCall("sip:" + calleeNumber, prm);
 
   invalidPlayer.createPlayer("demos/survey/audios/invalid.wav");
+  questionPlayer.createPlayer("demos/survey/audios/question.wav");
+  byePlayer.createPlayer("demos/survey/audios/bye.wav");
+  greetingsPlayer.createPlayer("demos/survey/audios/greetings.wav");
+  redPlayer.createPlayer("demos/survey/audios/red.wav");
+  greenPlayer.createPlayer("demos/survey/audios/green.wav");
+  bluePlayer.createPlayer("demos/survey/audios/blue.wav");
 
   pj_thread_sleep(36000000); // 10 hours
   delete myAccount;
