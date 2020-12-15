@@ -20,6 +20,7 @@ public:
 
   virtual void onCallState(OnCallStateParam &params) {
     CallInfo callInfo = getInfo();
+    cout << "******" << callInfo.stateText << "******" << "\n";
     if(callInfo.stateText == "CONFIRMED") { // call answered
       pj_thread_sleep(2000); // 2 seconds
       for (unsigned i = 0; i < callInfo.media.size(); i++)
@@ -27,11 +28,13 @@ public:
         if (callInfo.media[i].type == PJMEDIA_TYPE_AUDIO && getMedia(i))
         {
           AudioMedia *audioMedia = (AudioMedia *)getMedia(i);
-          player.createPlayer("demos/survey/question.wav", PJMEDIA_FILE_NO_LOOP);
+          player.createPlayer("demos/survey/audios/question.wav", PJMEDIA_FILE_NO_LOOP);
           player.startTransmit(*audioMedia);
           break;
         }
       }
+    } else if (callInfo.stateText == "DISCONNCTD") {
+      exit(0);
     }
   }
 };
