@@ -24,7 +24,7 @@ docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip ./run.sh <fil
 For example:
 
 ```
-docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip ./run.sh demos/answer-and-save-to-wav-file.cpp
+docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip ./run.sh demos/call-and-play-wav-file.cpp
 ```
 
 

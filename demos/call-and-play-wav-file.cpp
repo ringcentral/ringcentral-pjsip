@@ -71,7 +71,7 @@ int main()
   CallOpParam prm(true); // Use default call settings
   call->makeCall("sip:" + calleeNumber, prm);
 
-  pj_thread_sleep(36000000); // 10 hours
+  pj_thread_sleep(20000); // 20 seconds
   delete myAccount;
   return 0;
 }
