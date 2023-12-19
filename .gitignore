@@ -1,4 +1,4 @@
 credentials.hpp
 temp.*
 test.*
-demos/survey/audios/
+demos/survey/audios/*.wav
