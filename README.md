@@ -58,3 +58,12 @@ In order to fix it, we need ffmpeg:
 ```
 ffmpeg -i temp.wav hello.wav
 ```
+
+
+## Dev notes
+
+How to run a docker bash:
+
+```
+docker run --rm -it ringcentral-pjsip:latest /bin/bash
+```
