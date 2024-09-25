@@ -140,15 +140,16 @@ int main()
   endpoint.libInit(epConfig);
   TransportConfig transportConfig;
   transportConfig.port = 5060;
-  endpoint.transportCreate(PJSIP_TRANSPORT_TCP, transportConfig);
+  endpoint.transportCreate(PJSIP_TRANSPORT_TLS, transportConfig);
   endpoint.libStart();
 
   Endpoint::instance().audDevManager().setNullDev();
 
   AccountConfig accountConfig;
+  accountConfig.mediaConfig.srtpUse = PJMEDIA_SRTP_MANDATORY;
   accountConfig.idUri = "sip:" + userName + "@sip.ringcentral.com";
   accountConfig.regConfig.registrarUri = "sip:sip.ringcentral.com";
-  accountConfig.sipConfig.proxies = {"sip:" + outboundProxy + ";transport=tcp"};
+  accountConfig.sipConfig.proxies = {"sip:" + outboundProxy + ";transport=tls"};
   accountConfig.sipConfig.authCreds.push_back(
       AuthCredInfo("digest", "*", authorizationId, 0, password));
   MyAccount *myAccount = new MyAccount;
