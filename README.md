@@ -4,16 +4,14 @@ Use [PJSIP](https://www.pjsip.org/) to create RingCentral device simulators.
 
 Technical Reference: [slides](https://docs.google.com/presentation/d/15KvnbZVB_adSN6xjwlRHh-dsc3HWeVrAkxvBRSLVGPc/edit?usp=sharing).
 
-
 ## Setup
 
 ```
-docker build -t ringcentral-pjsip:latest .
+docker build -t ringcentral-pjsip .
 cp credentials.sample.hpp credentials.hpp
 ```
 
 Edit `credentials.hpp` and specify credentials.
-
 
 ## Run
 
@@ -27,19 +25,16 @@ For example:
 docker run -it --rm -v $(pwd):/ringcentral-pjsip ringcentral-pjsip ./run.sh demos/call-and-play-wav-file.cpp
 ```
 
-
 ## Test
 
 Call the phone number associated with your RingCentral device.
-
 
 ## Todo
 
 - How to deploy to AWS?
 - Add demo about microphone and speaker
 - high concurrence
-    - one application to handle handreds of calls
-
+  - one application to handle handreds of calls
 
 ## Miscellaneos
 
@@ -59,11 +54,16 @@ In order to fix it, we need ffmpeg:
 ffmpeg -i temp.wav hello.wav
 ```
 
-
 ## Dev notes
 
 How to run a docker bash:
 
 ```
-docker run --rm -it ringcentral-pjsip:latest /bin/bash
+docker run --rm -it ringcentral-pjsip /bin/bash
 ```
+
+## Emergency Address
+
+If you change your device's emergency address on service.ringcentral.com, sometimes the emergency address will be pending or failure to change.
+
+If it happens, your cannot make any outbound calls. Server side will reply with `SIP/2.0 486 Busy Here` if you try to make outbound calls.
