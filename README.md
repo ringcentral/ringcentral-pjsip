@@ -62,6 +62,8 @@ How to run a docker bash:
 docker run --rm -it ringcentral-pjsip /bin/bash
 ```
 
+- Ref: https://docs.pjsip.org/en/2.10/pjsua2/account.html
+
 ## Emergency Address
 
 If you change your device's emergency address on service.ringcentral.com, sometimes the emergency address will be pending or failure to change.
