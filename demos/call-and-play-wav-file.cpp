@@ -70,6 +70,14 @@ int main()
   // Make outbound call
   Call *call = new MyCall(*myAccount);
   CallOpParam prm(true); // Use default call settings
+
+  // add a customer header
+  // header added, but caller id not working
+  SipHeader customHeader;
+  customHeader.hName = "P-Asserted-Identity";
+  customHeader.hValue = "sip:12099213248@sip.ringcentral.com";
+  prm.txOption.headers.push_back(customHeader);
+
   call->makeCall("sip:" + calleeNumber, prm);
 
   pj_thread_sleep(20000); // 20 seconds
